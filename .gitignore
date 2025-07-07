@@ -13,4 +13,5 @@ __pycache__/
 
 # Ignorer les fichiers de configuration locale
 .idea/
-.vscode/
+.vscode/recrutement_api/venv/
+*/venv/
