@@ -1,3 +1,16 @@
-risk_api/venv
-recrutement_api/venv
-odoo-source
+odoo-source/
+
+# Ignorer tout autre dossier venv éventuel
+*/venv/
+
+# Ignorer les artefacts Python compilés
+__pycache__/
+*.py[cod]
+
+# Ignorer les gros binaires (pris en charge par LFS)
+*.pkl
+*.ipynb
+
+# Ignorer les fichiers de configuration locale
+.idea/
+.vscode/
