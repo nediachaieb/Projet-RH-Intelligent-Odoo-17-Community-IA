@@ -1,0 +1,2 @@
+Modèle,F1_macro,Accuracy,Precision,Recall,F1_Low,F1_Medium,F1_High
+XGBoost_Optuna,0.978,0.979,0.978,0.979,0.985,0.965,0.985

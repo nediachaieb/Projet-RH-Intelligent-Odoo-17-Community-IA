@@ -1,0 +1,22 @@
+<odoo>
+  <data>
+    <!-- Catégorie pour les groupes du module risk -->
+    <record id="group_category_risk" model="ir.module.category">
+      <field name="name">risk</field>
+      <field name="description">Catégorie pour les groupes du module risk</field>
+      <field name="sequence">20</field>
+    </record>
+
+    <!-- Groupe RH : accès complet aux employés et aux réponses de sondage -->
+    <record id="group_rh_risk" model="res.groups">
+      <field name="name">Responsable Rh</field>
+      <field name="category_id" ref="risk_prediction.group_category_risk"/>
+    </record>
+
+    <!-- Groupe Employé : accès lecture seule de sa fiche et accès aux réponses de sondage -->
+    <record id="group_emp_risk" model="res.groups">
+      <field name="name">Employee</field>
+      <field name="category_id" ref="risk_prediction.group_category_risk"/>
+    </record>
+  </data>
+</odoo>

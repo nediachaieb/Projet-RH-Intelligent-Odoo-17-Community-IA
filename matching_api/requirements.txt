@@ -1,0 +1,26 @@
+#  API Backend
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+
+# Modèle de similarité
+torch==2.2.2+cpu ; platform_system != "Windows"
+sentence-transformers==2.6.1
+transformers==4.37.2
+
+#  Traitement NLP
+nltk==3.8.1
+scikit-learn==1.4.2
+
+#  Lecture et parsing PDF CV
+PyMuPDF==1.23.22
+
+# Form handling
+python-multipart==0.0.9
+
+# Accès optimisé aux modèles HuggingFace
+huggingface_hub[hf_xet]
+numpy<2.0.0
+#pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+
+# Téléchargement nécessaire pour NLTK :python -m nltk.downloader punkt
+
