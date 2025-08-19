@@ -6,12 +6,3 @@ odoo-source/
 # Ignorer les artefacts Python compilés
 __pycache__/
 *.py[cod]
-
-# Ignorer les gros binaires (pris en charge par LFS)
-*.pkl
-*.ipynb
-
-# Ignorer les fichiers de configuration locale
-.idea/
-.vscode/recrutement_api/venv/
-*/venv/

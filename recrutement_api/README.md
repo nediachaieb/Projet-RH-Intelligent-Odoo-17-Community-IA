@@ -4,7 +4,7 @@ API FastAPI pour prédire le nombre de recrutements à prévoir, basée sur un m
 
 ## Lancer l'API
 
-```bash
 pip install -r requirements.txt
-uvicorn main:app --reload
+
+uvicorn app.main:app --host 0.0.0.0 --port 8050
 
