@@ -125,31 +125,16 @@ Chaque fonctionnalité est implémentée comme un **microservice FastAPI** et **
 ```mermaid
 flowchart LR
     subgraph Odoo[Odoo 17 Community]
-      RP[risk_prediction] -->|/predict| FastAPI1
-      RA[recruitment_analysis] -->|/predict| FastAPI2
-      CVM[hr_employee_ai_matching] -->|/match/multiple| FastAPI3
+        RP[risk_prediction] -->|predict| FastAPI1
+        RA[recruitment_analysis] -->|predict| FastAPI2
+        CVM[hr_employee_ai_matching] -->|match/multiple| FastAPI3
     end
 
     subgraph FastAPI
-      FastAPI1[XGBoost Classifier]:::ml
-      FastAPI2[Time Series Models]:::ml
-      FastAPI3[CV Matching NLP]:::ml
+        FastAPI1[XGBoost Classifier]
+        FastAPI2[Time Series Models]
+        FastAPI3[CV Matching NLP]
     end
-
-    classDef ml fill=#d9f,stroke=#333,stroke-width=1px;
-```
-
----
-
-## ⚡ Lancement rapide
-
-```bash
-# Cloner le projet
-git clone https://github.com/username/Project_odoo_17_IA.git
-cd Project_odoo_17_IA
-
-# Démarrer avec Docker
-docker-compose up --build
 ```
 
 * 🔹 Odoo → `http://localhost:8069`
