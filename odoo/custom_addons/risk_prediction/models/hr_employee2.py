@@ -100,7 +100,7 @@ class HrEmployee(models.Model):
     performance_rating = fields.Selection(
         [('low', 'Low'), ('below_average', 'Below Average'),
          ('average', 'Average'), ('high', 'High')],
-        string="Performance Rating", default="average"
+        string="Performance Rating"
     )
     leadership_opportunities = fields.Selection(
         [('yes', 'Yes'), ('no', 'No')],
@@ -124,7 +124,6 @@ class HrEmployee(models.Model):
         [('low', 'Low'), ('medium', 'Medium'), ('high', 'High'), ('undefined', 'Undefined')],
         string="Predicted Risk", readonly=True
     )
-    prediction_reason = fields.Char(string="Raison de non-prédiction", readonly=True)
 
     historic_detaill = fields.One2many('historique.evaluation', 'employee_id', string='Historic', invisible="1")
 
@@ -219,136 +218,75 @@ class HrEmployee(models.Model):
     # ==================================================================
     #  Endpoint FastAPI
     # ------------------------------------------------------------------
-
     def predict_risk_for_employees(self):
         """
         Appelle le service FastAPI 'http://fastapirisk:8020/predict'
         et met à jour le champ predicted_risk.
-        Règle: si A incomplet ou B incomplet -> pas d'appel API, predicted_risk='undefined' + prediction_reason.
         """
         url = "http://fastapirisk:8020/predict"
-        valid_keys = [k for k, _ in self._fields['predicted_risk'].selection]
+        valid_keys = []
+        for k, _ in self._fields['predicted_risk'].selection:
+            valid_keys.append(k)
 
         for rec in self:
-            # --- Groupe A : RH obligatoires ---
-            missing_A = []
-            job_role_val = (getattr(rec, 'job_id', False) and rec.job_id.name) or (
-                        rec.department_id and rec.department_id.name)
+            # === CONTRÔLE DE SAISIE ===
+            # required_fields = [
+            #     'job_satisfaction',
+            #     'work_life_balance',
+            #     'performance_rating',
+            #     'leadership_opportunities',
+            #     'innovation_opportunities',
+            #     'company_reputation',
+            #     'employee_recognition',
+            # ]
+            #
+            # for field in required_fields:
+            #     if not getattr(rec, field):
+            #         raise UserError(
+            #             f"Field '{field.replace('_', ' ').capitalize()}' is required to predict the risk of {rec.name}."
+            #         )
 
-            # Numériques/infos RH
-            if not rec.age or rec.age <= 0: missing_A.append('age')
-            if rec.years_at_company is None or rec.years_at_company < 0: missing_A.append('years_at_company')
-            if rec.monthly_income is None or rec.monthly_income <= 0: missing_A.append('monthly_income')
-            if getattr(rec, 'km_home_work', None) is None: missing_A.append('distance_from_home')  # 0 peut être valide
-            if rec.number_of_promotions is None: missing_A.append('number_of_promotions')
-            if rec.children is None: missing_A.append('number_of_dependents')
-
-            # Catégorielles RH
-            if not job_role_val: missing_A.append('job_role')
-            if not rec.job_level: missing_A.append('job_level')
-            if rec.company_size is None: missing_A.append('company_size')
-            if not rec.certificate: missing_A.append('education_level')
-            if not rec.marital: missing_A.append('marital_status')
-            if rec.overTime not in ('yes', 'no'): missing_A.append('overtime')
-            if rec.remote_work not in ('yes', 'no'): missing_A.append('remote_work')
-            if not rec.gender: missing_A.append('gender')
-            if not rec.performance_rating: missing_A.append('performance_rating')
-
-            if missing_A:
-                rec.predicted_risk = 'undefined'
-                rec.prediction_reason = "RH incomplet : " + ", ".join(missing_A)
-                self.env['historique.evaluation'].sudo().create({
-                    'name': f"Évaluation IA - {fields.Datetime.now().strftime('%Y-%m-%d %H:%M')} | Motif: RH incomplet",
-                    'date': fields.Datetime.now(),
-                    'employee_id': rec.id,
-                    'job_satis': rec.job_satisfaction,
-                    'work_life': rec.work_life_balance,
-                    'leadership_opport': rec.leadership_opportunities,
-                    'innovation_opport': rec.innovation_opportunities,
-                    'company_reput': rec.company_reputation,
-                    'employee_recog': rec.employee_recognition,
-                    'performance': rec.performance_rating,
-                    'pred_risk': 'undefined',
-                })
-                continue  # pas d'appel API
-
-            # --- Groupe B : Employé 6/6 requis ---
-            missing_B = []
-            for f in [
-                'job_satisfaction', 'work_life_balance', 'employee_recognition',
-                'leadership_opportunities', 'innovation_opportunities', 'company_reputation'
-            ]:
-                if not getattr(rec, f):
-                    missing_B.append(f)
-
-            if missing_B:
-                rec.predicted_risk = 'undefined'
-                rec.prediction_reason = "Sondage incomplet : " + ", ".join(missing_B)
-                self.env['historique.evaluation'].sudo().create({
-                    'name': f"Évaluation IA - {fields.Datetime.now().strftime('%Y-%m-%d %H:%M')} | Motif: Sondage incomplet",
-                    'date': fields.Datetime.now(),
-                    'employee_id': rec.id,
-                    'job_satis': rec.job_satisfaction,
-                    'work_life': rec.work_life_balance,
-                    'leadership_opport': rec.leadership_opportunities,
-                    'innovation_opport': rec.innovation_opportunities,
-                    'company_reput': rec.company_reputation,
-                    'employee_recog': rec.employee_recognition,
-                    'performance': rec.performance_rating,
-                    'pred_risk': 'undefined',
-                })
-                continue  # pas d'appel API
-
-            # --- Payload strict : aucune valeur par défaut n'est injectée ---
             payload = {
-                "age": int(rec.age),
-                "years_at_company": int(rec.years_at_company),
-                "job_role": job_role_val,
-                "monthly_income": int(rec.monthly_income),
-                "number_of_promotions": int(rec.number_of_promotions),  # 0 possible mais valeur réelle
-                "distance_from_home": int(rec.km_home_work),  # 0 possible mais valeur réelle
-                "number_of_dependents": int(rec.children),  # 0 possible mais valeur réelle
-                "job_level": rec.job_level.capitalize(),
+                "age": rec.age or 0,
+                "years_at_company": rec.years_at_company or 0,
+                "job_role": rec.department_id.name or "Unknown",
+                "monthly_income": int(rec.monthly_income or 0),
+                "number_of_promotions": rec.number_of_promotions or 0,
+                "distance_from_home": int(rec.km_home_work or 0),
+                "number_of_dependents": rec.children or 0,
+                "job_level": rec.job_level.capitalize() if rec.job_level else "Mid",
                 "company_size": self._get_company_size_label(rec.company_size),
                 "education_level": self._map_certificate_to_level(rec.certificate),
-                "marital_status": rec.marital.capitalize(),
+                "marital_status": (rec.marital.capitalize() if rec.marital else "Single"),
                 "overtime": "Yes" if rec.overTime == "yes" else "No",
                 "remote_work": "Yes" if rec.remote_work == "yes" else "No",
-                "gender": self._label(rec.gender),
-
-                # Ordinales (toutes présentes, pas de fallback)
-                "performance_rating": self._label(rec.performance_rating),
-                "leadership_opportunities": "Yes" if rec.leadership_opportunities == "yes" else "No",
-                "innovation_opportunities": "Yes" if rec.innovation_opportunities == "yes" else "No",
-                "company_reputation": self._label(rec.company_reputation),
-                "employee_recognition": self._label(rec.employee_recognition),
-                "work_life_balance": self._label(rec.work_life_balance),
-                "job_satisfaction": self._label(rec.job_satisfaction),
+                "leadership_opportunities": self._label_or_default(rec.leadership_opportunities, "No"),
+                "innovation_opportunities": self._label_or_default(rec.innovation_opportunities, "No"),
+                "gender": self._label_or_default(rec.gender, "Male"),
+                "company_reputation": self._label_or_default(rec.company_reputation, "Good"),
+                "employee_recognition": self._label_or_default(rec.employee_recognition, "Medium"),
+                "work_life_balance": self._label_or_default(rec.work_life_balance, "Fair"),
+                "job_satisfaction": self._label_or_default(rec.job_satisfaction, "Medium"),
+                "performance_rating": self._label_or_default(rec.performance_rating, "Average"),
             }
 
-            # --- Appel API ---
             try:
-                _logger.info("Payload sent to FastAPI for %s: %s", rec.name, payload)
+                _logger.info("Payload sent to FastAPI: %s", payload)
                 resp = requests.post(url, json=payload, timeout=30)
                 if resp.status_code == 200:
-                    raw = (resp.json().get("prediction", "undefined") or "undefined").lower()
+                    raw = resp.json().get("prediction", "undefined").lower()
                     risk = raw if raw in valid_keys else 'undefined'
-                    if risk == 'undefined':
-                        rec.prediction_reason = rec.prediction_reason or "Réponse API invalide"
                 else:
                     risk = 'undefined'
-                    rec.prediction_reason = f"Erreur API: HTTP {resp.status_code}"
             except Exception as e:
                 _logger.error("API Error for %s: %s", rec.name, e)
                 risk = 'undefined'
-                rec.prediction_reason = f"Erreur API : {e}"
 
-            # --- Mise à jour + Historisation ---
+                # 1) Met à jour l’employé
             rec.predicted_risk = risk
-            if risk != 'undefined':
-                rec.prediction_reason = False  # on efface la raison si tout est OK
 
-            self.env['historique.evaluation'].sudo().create({
+
+            vals = {
                 'name': f"Évaluation IA - {fields.Datetime.now().strftime('%Y-%m-%d %H:%M')}",
                 'date': fields.Datetime.now(),
                 'employee_id': rec.id,
@@ -360,7 +298,8 @@ class HrEmployee(models.Model):
                 'employee_recog': rec.employee_recognition,
                 'performance': rec.performance_rating,
                 'pred_risk': risk,
-            })
+            }
+            self.env['historique.evaluation'].sudo().create(vals)
 
         return True
 
@@ -378,13 +317,13 @@ class HrEmployee(models.Model):
     def _get_company_size_label(self, size):
         return "Small" if size <= 50 else "Medium" if size <= 250 else "Large"
 
-    def _label(self, value):
+    def _label_or_default(self, value, default):
         """
         Convertit un code stocké (low/medium/high…) en label lisible par l’API.
         """
         return {
             "low": "Low", "medium": "Medium", "high": "High", "very_high": "Very High",
-            "poor": "Poor", "fair": "Fair", "good": "Good", "excellent": "Excellent","average": "Average",
+            "poor": "Poor", "fair": "Fair", "good": "Good", "excellent": "Excellent",
             "below_average": "Below Average", "yes": "Yes", "no": "No",
             "male": "Male", "female": "Female"
-        }.get(value and value.lower())
+        }.get(value and value.lower(), default)

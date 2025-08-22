@@ -1,6 +1,6 @@
 {
     'name': 'Risk Prediction',
-    'version': '17.0.1',
+    'version': '17.0.1.0.0',
     'summary': 'Predict employee risk and satisfaction based on Surveys',
     'category': 'Human Resources',
     'license': 'LGPL-3',

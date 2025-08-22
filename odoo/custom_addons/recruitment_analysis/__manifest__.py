@@ -1,6 +1,6 @@
 {
     'name': 'Department Recruitment Analysis',
-    'version': '17.0.1',
+    'version': '17.0.1.0.0',
     'summary': 'Predict and analyze recruitment needs by department',
     'category': 'Human Resources',
     'depends': ['hr', 'hr_recruitment'],

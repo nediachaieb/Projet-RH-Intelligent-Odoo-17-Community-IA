@@ -2,25 +2,25 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-#  Dépendances système nécessaires
+# Dépendances système (corrigé : libgl1 au lieu de libgl1-mesa-glx)
 RUN apt-get update --allow-releaseinfo-change && apt-get install -y --no-install-recommends \
-    build-essential libglib2.0-0 libgl1-mesa-glx libxrender1 libsm6 libxext6 libjpeg-dev \
+    build-essential libglib2.0-0 libgl1 libxrender1 libsm6 libxext6 libjpeg-dev \
     zlib1g-dev libxml2-dev libxslt1-dev git curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#  Mise à jour de pip
+# Mise à jour de pip
 RUN pip install --upgrade pip
 
-#  Compatibilité Torch avec NumPy
+# Compatibilité Torch avec NumPy
 RUN pip install "numpy<2.0.0"
 
-#  Installation PyTorch CPU
+# Installation PyTorch CPU
 RUN pip install --default-timeout=1000 "torch==2.2.2+cpu" -f https://download.pytorch.org/whl/cpu/torch_stable.html
 
 # Transformers compatible avec torch 2.2.2
 RUN pip install "transformers==4.37.2"
 
-#  Sentence Transformers + patch pour Hugging Face
+# Sentence Transformers + patch pour Hugging Face
 RUN pip install sentence-transformers==2.6.1
 RUN pip install "huggingface_hub[hf_xet]"
 
@@ -37,5 +37,5 @@ RUN python -m nltk.downloader punkt
 # Ajout du code de l’application
 COPY ./app /app/app
 
-#  Lancement de l’API
+# Lancement de l’API
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8045"]

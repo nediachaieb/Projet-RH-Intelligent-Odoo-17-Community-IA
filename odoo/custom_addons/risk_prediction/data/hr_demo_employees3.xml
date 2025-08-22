@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <data noupdate="0">
+  <data noupdate="1">
 
     <!-- 0) Postes de démo -->
     <record id="demo_job_developer" model="hr.job">
@@ -87,9 +87,9 @@
       <field name="name">Support</field>
     </record>
 
-    <!-- 3) Employés de démo -->
+    <!-- 3) Employés de démo (ORIGINE) -->
 
-    <!-- Fatma – Home, 2 enfants, km_home_work=10, Developer -->
+    <!-- Fatma – bureau, 2 enfants, km_home_work=10, Developer -->
     <record id="demo_part_fatma" model="res.partner">
       <field name="name">Fatma</field>
       <field name="email">fatma@example.com</field>
@@ -111,21 +111,13 @@
       <field name="user_id" ref="demo_user_fatma"/>
       <field name="work_email">fatma@example.com</field>
       <field name="department_id" ref="demo_dep_finance"/>
-      <field name="work_location_id" ref="demo_loc_home"/>
+      <field name="work_location_id" ref="demo_loc_office"/>
       <field name="birthday">1988-04-12</field>
       <field name="children">2</field>
       <field name="km_home_work">10</field>
       <field name="gender">female</field>
       <field name="marital">married</field>
       <field name="certificate">master</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">high</field>
-      <field name="work_life_balance">good</field>
-      <field name="performance_rating">high</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_fatma" model="hr.contract">
       <field name="name">Contract Fatma</field>
@@ -178,14 +170,6 @@
       <field name="gender">male</field>
       <field name="marital">single</field>
       <field name="certificate">bachelor</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">very_high</field>
-      <field name="work_life_balance">excellent</field>
-      <field name="performance_rating">high</field>
-      <field name="leadership_opportunities">yes</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">excellent</field>
-      <field name="employee_recognition">high</field>
     </record>
     <record id="demo_contract_iheb" model="hr.contract">
       <field name="name">Contract Iheb</field>
@@ -237,14 +221,6 @@
       <field name="gender">female</field>
       <field name="marital">married</field>
       <field name="certificate">bachelor</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">medium</field>
-      <field name="work_life_balance">fair</field>
-      <field name="performance_rating">average</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_carol" model="hr.contract">
       <field name="name">Contract Carol</field>
@@ -296,14 +272,6 @@
       <field name="gender">male</field>
       <field name="marital">married</field>
       <field name="certificate">graduate</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">high</field>
-      <field name="work_life_balance">good</field>
-      <field name="performance_rating">high</field>
-      <field name="leadership_opportunities">yes</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">excellent</field>
-      <field name="employee_recognition">high</field>
     </record>
     <record id="demo_contract_khayri" model="hr.contract">
       <field name="name">Contract Khayri</field>
@@ -355,14 +323,6 @@
       <field name="gender">female</field>
       <field name="marital">single</field>
       <field name="certificate">bachelor</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">very_high</field>
-      <field name="work_life_balance">excellent</field>
-      <field name="performance_rating">high</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_aya" model="hr.contract">
       <field name="name">Contract Aya</field>
@@ -415,14 +375,6 @@
       <field name="gender">male</field>
       <field name="marital">single</field>
       <field name="certificate">bachelor</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">high</field>
-      <field name="work_life_balance">good</field>
-      <field name="performance_rating">average</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">no</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_omar" model="hr.contract">
       <field name="name">Contract Omar</field>
@@ -440,7 +392,7 @@
       <field name="check_out">2025-05-07 17:10:00</field>
     </record>
 
-    <!-- 3.2 Nadia – Datascientist, Home,  -->
+    <!-- 3.2 Nadia – Finance, Home, Accountant -->
     <record id="demo_part_nadia" model="res.partner">
       <field name="name">Nadia</field>
       <field name="email">nadia@example.com</field>
@@ -458,7 +410,7 @@
       <field name="name">Nadia</field>
       <field name="user_id" ref="demo_user_nadia"/>
       <field name="work_email">nadia@example.com</field>
-      <field name="department_id" ref="demo_dep_rnd"/>
+      <field name="department_id" ref="demo_dep_finance"/>
       <field name="work_location_id" ref="demo_loc_home"/>
       <field name="birthday">1996-03-02</field>
       <field name="children">0</field>
@@ -466,24 +418,15 @@
       <field name="gender">female</field>
       <field name="marital">single</field>
       <field name="certificate">master</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">high</field>
-      <field name="work_life_balance">excellent</field>
-      <field name="performance_rating">high</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">no</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_nadia" model="hr.contract">
       <field name="name">Contract Nadia</field>
       <field name="date_start">2024-01-15</field>
       <field name="employee_id" ref="demo_emp_nadia"/>
-      <field name="job_id" ref="demo_job_datascientist"/>
-      <field name="department_id" ref="demo_dep_rnd"/>
-      <field name="wage">5200.0</field>
+      <field name="job_id" ref="demo_job_accountant"/>
+      <field name="department_id" ref="demo_dep_finance"/>
+      <field name="wage">4200.0</field>
       <field name="state">open</field>
-
       <field name="hr_responsible_id" ref="base.user_admin"/>
     </record>
     <record id="demo_att_nadia_1" model="hr.attendance">
@@ -518,14 +461,6 @@
       <field name="gender">male</field>
       <field name="marital">married</field>
       <field name="certificate">bachelor</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">medium</field>
-      <field name="work_life_balance">fair</field>
-      <field name="performance_rating">average</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">no</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">high</field>
     </record>
     <record id="demo_contract_mehdi" model="hr.contract">
       <field name="name">Contract Mehdi</field>
@@ -561,7 +496,7 @@
       <field name="name">Salma</field>
       <field name="user_id" ref="demo_user_salma"/>
       <field name="work_email">salma@example.com</field>
-      <field name="department_id" ref="demo_dep_it"/>
+      <field name="department_id" ref="demo_dep_hr"/>
       <field name="work_location_id" ref="demo_loc_office"/>
       <field name="birthday">1994-08-30</field>
       <field name="children">0</field>
@@ -569,21 +504,13 @@
       <field name="gender">female</field>
       <field name="marital">single</field>
       <field name="certificate">graduate</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">medium</field>
-      <field name="work_life_balance">good</field>
-      <field name="performance_rating">average</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">no</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_salma" model="hr.contract">
       <field name="name">Contract Salma</field>
       <field name="date_start">2020-01-10</field>
       <field name="employee_id" ref="demo_emp_salma"/>
-      <field name="job_id" ref="demo_job_devops"/>
-      <field name="department_id" ref="demo_dep_it"/>
+      <field name="job_id" ref="demo_job_hr_officer"/>
+      <field name="department_id" ref="demo_dep_hr"/>
       <field name="wage">3700.0</field>
       <field name="state">open</field>
       <field name="hr_responsible_id" ref="base.user_admin"/>
@@ -620,14 +547,6 @@
       <field name="gender">male</field>
       <field name="marital">married</field>
       <field name="certificate">master</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">very_high</field>
-      <field name="work_life_balance">excellent</field>
-      <field name="performance_rating">high</field>
-      <field name="leadership_opportunities">yes</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">excellent</field>
-      <field name="employee_recognition">high</field>
     </record>
     <record id="demo_contract_youssef" model="hr.contract">
       <field name="name">Contract Youssef</field>
@@ -671,14 +590,6 @@
       <field name="gender">female</field>
       <field name="marital">single</field>
       <field name="certificate">bachelor</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">medium</field>
-      <field name="work_life_balance">fair</field>
-      <field name="performance_rating">average</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">good</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_lina" model="hr.contract">
       <field name="name">Contract Lina</field>
@@ -722,14 +633,6 @@
       <field name="gender">male</field>
       <field name="marital">married</field>
       <field name="certificate">graduate</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">medium</field>
-      <field name="work_life_balance">fair</field>
-      <field name="performance_rating">average</field>
-      <field name="leadership_opportunities">no</field>
-      <field name="innovation_opportunities">no</field>
-      <field name="company_reputation">fair</field>
-      <field name="employee_recognition">medium</field>
     </record>
     <record id="demo_contract_amine" model="hr.contract">
       <field name="name">Contract Amine</field>
@@ -773,14 +676,6 @@
       <field name="gender">female</field>
       <field name="marital">married</field>
       <field name="certificate">master</field>
-      <!-- Satisfaction & context -->
-      <field name="job_satisfaction">high</field>
-      <field name="work_life_balance">good</field>
-      <field name="performance_rating">high</field>
-      <field name="leadership_opportunities">yes</field>
-      <field name="innovation_opportunities">yes</field>
-      <field name="company_reputation">excellent</field>
-      <field name="employee_recognition">high</field>
     </record>
     <record id="demo_contract_sara" model="hr.contract">
       <field name="name">Contract Sara</field>
@@ -824,14 +719,6 @@
       <field name="gender">male</field>
       <field name="marital">married</field>
       <field name="certificate">graduate</field>
-      <!-- Satisfaction & context -->
-<!--      <field name="job_satisfaction">high</field>-->
-<!--      <field name="work_life_balance">fair</field>-->
-<!--      <field name="performance_rating">high</field>-->
-<!--      <field name="leadership_opportunities">yes</field>-->
-<!--      <field name="innovation_opportunities">yes</field>-->
-<!--      <field name="company_reputation">excellent</field>-->
-<!--      <field name="employee_recognition">high</field>-->
     </record>
     <record id="demo_contract_karim" model="hr.contract">
       <field name="name">Contract Karim</field>
@@ -875,14 +762,6 @@
       <field name="gender">female</field>
       <field name="marital">single</field>
       <field name="certificate">bachelor</field>
-      <!-- Satisfaction & context -->
-<!--      <field name="job_satisfaction">high</field>-->
-<!--      <field name="work_life_balance">excellent</field>-->
-<!--      <field name="performance_rating">high</field>-->
-<!--      <field name="leadership_opportunities">no</field>-->
-<!--      <field name="innovation_opportunities">no</field>-->
-<!--      <field name="company_reputation">good</field>-->
-<!--      <field name="employee_recognition">medium</field>-->
     </record>
     <record id="demo_contract_hala" model="hr.contract">
       <field name="name">Contract Hala</field>

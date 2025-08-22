@@ -4,63 +4,43 @@
     <!-- =========================== -->
     <!-- 1) TREE VIEW + bouton       -->
     <!-- =========================== -->
-    <record id="view_hr_employee_tree_predict_risk" model="ir.ui.view">
-    <field name="name">hr.employee.tree.predict.risk.inherit</field>
-    <field name="model">hr.employee</field>
-    <field name="inherit_id" ref="hr.view_employee_tree"/>
-    <field name="arch" type="xml">
+    <record id="view_hr_employee_tree" model="ir.ui.view">
+        <field name="name">hr.employee.tree.predict.risk</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree string="Employees"
+                      default_order="predicted_risk desc"
+                      decoration-danger="predicted_risk == 'high'"
+                      decoration-warning="predicted_risk == 'medium'"
+                      decoration-success="predicted_risk == 'low'">
 
-        <!-- 1) On garde le tree existant et on ajoute des attributs -->
-        <xpath expr="//tree" position="attributes">
-            <attribute name="default_order">predicted_risk desc</attribute>
-            <attribute name="decoration-danger">predicted_risk == 'high'</attribute>
-            <attribute name="decoration-warning">predicted_risk == 'medium'</attribute>
-            <attribute name="decoration-success">predicted_risk == 'low'</attribute>
-             <attribute name="decoration-muted">predicted_risk == 'undefined'</attribute>
-        </xpath>
+                    <header>
+                        <button name="predict_risk_for_employees"
+                                type="object"
+                                string="Predict Risk"
+                                class="btn-primary"
+                                icon="fa-bolt"
+                        />
+                    </header>
 
-        <!-- 2) Bouton dans le header existant -->
-        <xpath expr="//tree/header" position="inside">
-            <button name="predict_risk_for_employees"
-                    type="object"
-                    string="Predict Risk"
-                    class="btn-primary"
-                    icon="fa-bolt"/>
-        </xpath>
-
-        <!-- 3) Ajouter tes colonnes   -->
-        <xpath expr="//tree/field[@name='department_id']" position="after">
-            <!-- risk badge -->
-            <field name="predicted_risk" widget="badge"
-                   options="{'style':'binary','danger':['high'],'warning':['medium'],'success':['low']}"/>
-            <field name="prediction_reason"
-             string="Reason"
-             optional="show"
-             />
-            <!-- champs custom  -->
-            <field name="job_satisfaction" readonly="1" optional="1"/>
-            <field name="work_life_balance" readonly="1" optional="1"/>
-            <field name="leadership_opportunities" readonly="1" optional="1"/>
-            <field name="innovation_opportunities" readonly="1" optional="1"/>
-            <field name="company_reputation" readonly="1" optional="1"/>
-            <field name="employee_recognition" readonly="1" optional="1"/>
-            <field name="performance_rating" optional="1"/>
-
-            <field name="gender" optional="1"/>
-            <field name="age" optional="1"/>
-            <field name="marital" optional="1"/>
-            <field name="certificate" optional="1"/>
-            <field name="km_home_work" optional="1"/>
-
-            <field name="job_level" readonly="1" optional="1"/>
-            <field name="years_at_company" readonly="1" optional="1"/>
-            <field name="overTime" readonly="1" optional="1"/>
-            <field name="remote_work" readonly="1" optional="1"/>
-            <field name="monthly_income" readonly="1" optional="1"/>
-        </xpath>
-    </field>
-</record>
-
+                    <field name="name"/>
+                    <field name="work_email" widget="email"/>
+                    <field name="first_contract_date"/>
+                    <field name="department_id"/>
+                    <field name="job_title"/>
+                    <field name="predicted_risk" widget="badge"
+                           options="{
+                               'style':'binary',
+                               'danger':['high'],
+                               'warning':['medium'],
+                               'success':['low']
+                           }"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
 
     <!-- =========================== -->
     <!-- 2) SEARCH VIEW              -->
@@ -174,7 +154,7 @@
                     <field name="historic_detaill"
                            widget="one2many_list"
                            readonly="1">
-                        <tree>
+                        <tree >
                             <field name="date"/>
                             <field name="job_satis"/>
                             <field name="work_life"/>
