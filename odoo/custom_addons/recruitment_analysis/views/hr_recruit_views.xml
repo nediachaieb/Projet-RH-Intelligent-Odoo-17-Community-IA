@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+
+        <!-- =================== HR.RECRUIT.MONTH_HISTORY =================== -->
+        <record id="view_hr_recruit_month_history_tree" model="ir.ui.view">
+            <field name="name">hr.recruit.month_history.tree</field>
+            <field name="model">hr.recruit.month_history</field>
+            <field name="arch" type="xml">
+                <tree string="Historique mensuel">
+                    <field name="department_id"/>
+                    <field name="year"/>
+                    <field name="month"/>
+                    <field name="headcount_end"/>
+                    <field name="departures_month"/>
+                    <field name="turnover_month_pct" widget="percentage"/>
+                    <field name="computed_at"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_hr_recruit_month_history_form" model="ir.ui.view">
+            <field name="name">hr.recruit.month_history.form</field>
+            <field name="model">hr.recruit.month_history</field>
+            <field name="arch" type="xml">
+                <form string="Historique mensuel">
+                    <sheet>
+                        <group col="4">
+                            <group string="Contexte">
+                                <field name="department_id" required="1"/>
+                                <field name="year" required="1"/>
+                                <field name="month" required="1"/>
+                            </group>
+                            <group string="Période">
+                                <field name="date_start" readonly="1"/>
+                                <field name="date_end" readonly="1"/>
+                                <field name="computed_at" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <separator string="Indicateurs clés"/>
+                        <group string="KPI">
+                            <field name="headcount_start" readonly="1"/>
+                            <field name="headcount_end" readonly="1"/>
+                            <field name="departures_month" readonly="1"/>
+                            <field name="turnover_month_pct" widget="percentage" readonly="1"/>
+                            <field name="applicants_in_progress_month" readonly="1"/>
+                            <field name="postes_ouverts_actuels" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- ================== HR.RECRUIT.QUARTER_HISTORY ================== -->
+        <record id="view_hr_recruit_quarter_history_tree" model="ir.ui.view">
+            <field name="name">hr.recruit.quarter_history.tree</field>
+            <field name="model">hr.recruit.quarter_history</field>
+            <field name="arch" type="xml">
+                <tree string="Historique trimestriel">
+                    <field name="department_id"/>
+                    <field name="annee"/>
+                    <field name="quarter_num"/>
+                    <field name="departs_confirmes"/>
+                    <field name="postes_ouverts_actuels"/>
+                    <field name="effectif_actuel"/>
+                    <field name="turnover_month_pct" widget="percentage"/>
+                    <field name="predicted_need_next" string="Prévision Q+1" readonly="1" class="fw-bold"/>
+                    <field name="computed_at"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_hr_recruit_quarter_history_form2" model="ir.ui.view">
+            <field name="name">hr.recruit.quarter_history.form</field>
+            <field name="model">hr.recruit.quarter_history</field>
+            <field name="arch" type="xml">
+                <form string="Historique trimestriel">
+                    <sheet>
+
+                        <group col="4">
+                            <group string="Contexte">
+                                <field name="department_id" required="1"/>
+                                <field name="annee" required="1"/>
+                                <field name="quarter_num" required="1"/>
+
+                            </group>
+                            <group string="Période">
+                                <field name="quarter_start" readonly="1"/>
+                                <field name="quarter_end" readonly="1"/>
+                                <field name="computed_at" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <separator string="Indicateurs clés"/>
+                        <group string="KPI">
+                            <field name="departs_confirmes" readonly="1"/>
+                            <field name="candidats_en_cours" readonly="1"/>
+                            <field name="postes_ouverts_actuels" readonly="1"/>
+                            <field name="effectif_actuel" readonly="1"/>
+                            <field name="turnover_month_pct" widget="percentage" readonly="1"/>
+                            <field name="predicted_need_next" string="Prévision T+1" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="show_lags" widget="boolean" string="Afficher l'historique (lags)"/>
+                        </group>
+                        <notebook>
+                            <page string="Lags (Q-1..Q-4)" invisible="not show_lags">
+
+                                <group string="Départs confirmés">
+                                    <field name="departs_confirmes_lag_1" readonly="1"/>
+                                    <field name="departs_confirmes_lag_2" readonly="1"/>
+                                    <field name="departs_confirmes_lag_3" readonly="1"/>
+                                    <field name="departs_confirmes_lag_4" readonly="1"/>
+                                </group>
+                                <group string="Candidats en cours">
+                                    <field name="candidats_en_cours_lag_1" readonly="1"/>
+                                    <field name="candidats_en_cours_lag_2" readonly="1"/>
+                                    <field name="candidats_en_cours_lag_3" readonly="1"/>
+                                    <field name="candidats_en_cours_lag_4" readonly="1"/>
+                                </group>
+                                <group string="Postes ouverts">
+                                    <field name="postes_ouverts_actuels_lag_1" readonly="1"/>
+                                    <field name="postes_ouverts_actuels_lag_2" readonly="1"/>
+                                    <field name="postes_ouverts_actuels_lag_3" readonly="1"/>
+                                    <field name="postes_ouverts_actuels_lag_4" readonly="1"/>
+                                </group>
+                                <group string="Effectif">
+                                    <field name="effectif_actuel_lag_1" readonly="1"/>
+                                    <field name="effectif_actuel_lag_2" readonly="1"/>
+                                    <field name="effectif_actuel_lag_3" readonly="1"/>
+                                    <field name="effectif_actuel_lag_4" readonly="1"/>
+                                </group>
+                                <group string="Attrition mensuelle">
+                                    <field name="turnover_month_pct_lag_1" readonly="1"/>
+                                    <field name="turnover_month_pct_lag_2" readonly="1"/>
+                                    <field name="turnover_month_pct_lag_3" readonly="1"/>
+                                    <field name="turnover_month_pct_lag_4" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- ===================== HR.RECRUIT.ANALYSIS ====================== -->
+        <!-- TREE : prediction en 1er + décorations légères -->
+        <record id="view_hr_recruit_analysis_tree" model="ir.ui.view">
+            <field name="name">hr.recruit.analysis.tree</field>
+            <field name="model">hr.recruit.analysis</field>
+            <field name="arch" type="xml">
+                <tree string="Analyse &amp; Prédiction"
+                      decoration-muted="state == 'draft'"
+                      decoration-info="state == 'computed'"
+                      decoration-success="state == 'predicted' or state == 'saved'">
+                    <field name="prediction_value"/>
+                    <field name="department_id"/>
+                    <field name="annee"/>
+                    <field name="quarter_num"/>
+                    <field name="state"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- FORM : Draft => pas de KPI ; Calculé => KPI visibles ; Prédit => stat card prédiction -->
+        <record id="view_hr_recruit_analysis_form2" model="ir.ui.view">
+            <field name="name">hr.recruit.analysis.form</field>
+            <field name="model">hr.recruit.analysis</field>
+            <field name="arch" type="xml">
+                <form string="Analyse &amp; Prédiction">
+                    <header>
+                        <button name="action_compute" type="object" string="Calculer"/>
+                        <button name="action_predict" type="object" string="Prédire"/>
+                        <button name="action_save" type="object" string="Enregistrer"/>
+                        <button name="action_reset_to_draft" type="object" string="Réinitialiser"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,computed,predicted,saved,error"/>
+                    </header>
+
+                    <sheet>
+                        <!-- 1) rendre 'state' disponible au body -->
+                        <field name="state" invisible="1"/>
+
+                        <!-- Stat card : visible uniquement en predicted/saved -->
+                        <div class="oe_button_box" name="button_box">
+    <button class="oe_stat_button" type="object" name="action_predict"
+            invisible="state not in ['predicted', 'saved']">
+        <field name="prediction_value" widget="statinfo" string="Prédiction"/>
+    </button>
+</div>
+
+
+                        <group col="4">
+                            <group string="Contexte">
+                                <field name="department_id" required="1"/>
+                                <field name="annee" required="1"/>
+                                <field name="quarter_num" required="1"/>
+                                <field name="date_from" readonly="1"/>
+                                <field name="date_to" readonly="1"/>
+                            </group>
+
+                        </group>
+
+                        <group string="KPI" invisible="state == 'draft'">
+>
+                            <field name="departs_confirmes" readonly="1"/>
+                            <field name="candidats_en_cours" readonly="1"/>
+                            <field name="postes_ouverts_actuels" readonly="1"/>
+                            <field name="effectif_actuel" readonly="1"/>
+                            <field name="turnover_month_pct" widget="percentage" readonly="1"/>
+                        </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

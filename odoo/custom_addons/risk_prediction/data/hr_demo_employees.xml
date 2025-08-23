@@ -427,6 +427,7 @@
     <record id="demo_contract_omar" model="hr.contract">
       <field name="name">Contract Omar</field>
       <field name="date_start">2022-04-01</field>
+      <field name="date_end">2025-06-15</field>
       <field name="employee_id" ref="demo_emp_omar"/>
       <field name="job_id" ref="demo_job_analyst"/>
       <field name="department_id" ref="demo_dep_it"/>
@@ -555,7 +556,7 @@
       <field name="partner_id" ref="demo_part_salma"/>
       <field name="email">salma@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('risk_prediction.group_rh_risk'))]"/>
+      <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('risk_prediction.group_emp_risk'))]"/>
     </record>
     <record id="demo_emp_salma" model="hr.employee">
       <field name="name">Salma</field>
@@ -581,6 +582,7 @@
     <record id="demo_contract_salma" model="hr.contract">
       <field name="name">Contract Salma</field>
       <field name="date_start">2020-01-10</field>
+      <field name="date_end">2025-11-30</field>
       <field name="employee_id" ref="demo_emp_salma"/>
       <field name="job_id" ref="demo_job_devops"/>
       <field name="department_id" ref="demo_dep_it"/>
@@ -785,6 +787,7 @@
     <record id="demo_contract_sara" model="hr.contract">
       <field name="name">Contract Sara</field>
       <field name="date_start">2020-08-01</field>
+      <field name="date_end">2025-02-28</field>
       <field name="employee_id" ref="demo_emp_sara"/>
       <field name="job_id" ref="demo_job_devops"/>
       <field name="department_id" ref="demo_dep_it"/>

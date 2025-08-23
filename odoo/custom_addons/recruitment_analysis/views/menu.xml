@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="action_hr_recruit_quarter_history" model="ir.actions.act_window">
+            <field name="name">Quarterly History</field>
+            <field name="res_model">hr.recruit.quarter_history</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_hr_recruit_analysis" model="ir.actions.act_window">
+            <field name="name">Analysis &amp; Prediction</field>
+            <field name="res_model">hr.recruit.analysis</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_hr_recruit_month_history" model="ir.actions.act_window">
+            <field name="name">Monthly History</field>
+            <field name="res_model">hr.recruit.month_history</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- ============================ MENUS ============================ -->
+        <menuitem id="menu_hr_recruit_ai_root"
+                  name="Recruitment Forecast"
+                  parent="hr_recruitment.menu_hr_recruitment_root"
+                  sequence="50"/>
+
+        <menuitem id="menu_hr_recruit_month_history"
+                  name="Monthly History"
+                  parent="menu_hr_recruit_ai_root"
+                  action="action_hr_recruit_month_history"
+                  sequence="10"/>
+
+        <menuitem id="menu_hr_recruit_quarter_history"
+                  name="Quarterly History"
+                  parent="menu_hr_recruit_ai_root"
+                  action="action_hr_recruit_quarter_history"
+                  sequence="20"/>
+
+        <menuitem id="menu_hr_recruit_analysis"
+                  name="Analysis &amp; Prediction"
+                  parent="menu_hr_recruit_ai_root"
+                  action="action_hr_recruit_analysis"
+                  sequence="30"/>
+
+    </data>
+</odoo>

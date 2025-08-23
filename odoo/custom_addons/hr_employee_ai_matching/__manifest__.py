@@ -1,6 +1,6 @@
 {
     "name": "Employee AI Matching",
-    "version": "17.0.1.0.0",  # ✅ format valide selon Odoo 17
+    "version": "17.0.1.0.0",
     "category": "Human Resources",
     "summary": "Matching IA entre CV et description de poste",
     "license": "LGPL-3",

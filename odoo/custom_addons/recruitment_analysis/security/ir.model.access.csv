@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_department_analysis_calculator,access_department_analysis_calculator,model_department_analysis_calculator,,1,1,1,1
-access_department_analysis_history,access_department_analysis_history,model_department_analysis_history,,1,1,1,1
-
+access_hr_recruit_month_history_user,hr.recruit.month_history user,model_hr_recruit_month_history,base.group_user,1,1,1,1
+access_hr_recruit_quarter_history_user,hr.recruit.quarter_history user,model_hr_recruit_quarter_history,base.group_user,1,1,1,1
+access_hr_recruit_analysis_user,hr.recruit.analysis user,model_hr_recruit_analysis,base.group_user,1,1,1,1

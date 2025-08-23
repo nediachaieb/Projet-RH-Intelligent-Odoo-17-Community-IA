@@ -6,9 +6,10 @@
     'depends': ['hr', 'hr_recruitment'],
     'data': [
         'security/ir.model.access.csv',
-        'views/department_analysis_views.xml',
+        'views/hr_recruit_views.xml',
+        'views/menu.xml',
     ],
     'installable': True,
-    'application': True,
+    'application': False,
     'license': 'LGPL-3',
 }
