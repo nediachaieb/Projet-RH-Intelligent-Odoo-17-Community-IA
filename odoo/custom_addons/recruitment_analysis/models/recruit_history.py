@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 import calendar
 from datetime import date
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError
+
+from odoo import models, fields, api
 
 
 class HrRecruitMonthHistory(models.Model):
@@ -13,7 +14,7 @@ class HrRecruitMonthHistory(models.Model):
         'hr.department',
         string="Department",
         required=True,
-        index=True
+        index=True,
     )
 
     year = fields.Integer(string="Year", required=True, index=True)
@@ -21,6 +22,7 @@ class HrRecruitMonthHistory(models.Model):
 
     date_start = fields.Date(string="Start Date", compute="_compute_period", store=True)
     date_end = fields.Date(string="End Date", compute="_compute_period", store=True)
+
     # --- Effectifs ---
     headcount_start = fields.Integer(string="Headcount Start", compute="_compute_month_metrics", store=True)
     headcount_end = fields.Integer(string="Headcount End", compute="_compute_month_metrics", store=True)
@@ -31,13 +33,18 @@ class HrRecruitMonthHistory(models.Model):
     turnover_month_pct = fields.Float(string="Monthly Turnover (%)", compute="_compute_turnover", store=True)
 
     # --- Candidats & postes ouverts ---
-    applicants_in_progress_month = fields.Integer(string="Applicants In Progress",
-                                                compute="_compute_month_metrics", store=True)
-    postes_ouverts_actuels = fields.Integer(string="Open Positions", compute="_compute_month_metrics",
-                                          store=True)
+    applicants_in_progress_month = fields.Integer(
+        string="Applicants In Progress",
+        compute="_compute_month_metrics",
+        store=True,
+    )
+    postes_ouverts_actuels = fields.Integer(
+        string="Open Positions",
+        compute="_compute_month_metrics",
+        store=True,
+    )
 
     computed_at = fields.Datetime(string="Computed At")
-
 
     # ----------------------------
     # Période (bornes du mois)
@@ -48,9 +55,10 @@ class HrRecruitMonthHistory(models.Model):
             if rec.year and rec.month and 1 <= rec.month <= 12:
                 last_day = calendar.monthrange(rec.year, rec.month)[1]
                 rec.date_start = date(rec.year, rec.month, 1)
-                rec.date_end   = date(rec.year, rec.month, last_day)
+                rec.date_end = date(rec.year, rec.month, last_day)
             else:
-                rec.date_start = rec.date_end = False
+                rec.date_start = False
+                rec.date_end = False
 
     # ----------------------------
     # Moyenne d'effectif
@@ -59,7 +67,7 @@ class HrRecruitMonthHistory(models.Model):
     def _compute_headcount_mean(self):
         for rec in self:
             s = float(rec.headcount_start or 0)
-            e = float(rec.headcount_end   or 0)
+            e = float(rec.headcount_end or 0)
             rec.headcount_mean = (s + e) / 2.0 if (s or e) else 0
 
     # ----------------------------
@@ -71,26 +79,29 @@ class HrRecruitMonthHistory(models.Model):
             rec.turnover_month_pct = (rec.departures_month / rec.headcount_mean) if rec.headcount_mean else 0.0
 
     # ----------------------------
-    #  KPI (Key Performance Indicator) mensuels (compute unique)
+    # KPI mensuels (compute unique)
     # ----------------------------
     @api.depends('department_id', 'date_start', 'date_end')
     def _compute_month_metrics(self):
-        Contract  = self.env['hr.contract']
+        Contract = self.env['hr.contract']
         Applicant = self.env['hr.applicant']
-        Job       = self.env['hr.job']
+        Job = self.env['hr.job']
 
         for rec in self:
             dep = rec.department_id
             ds, de = rec.date_start, rec.date_end
 
             # initialisation
-            rec.headcount_start = rec.headcount_end = 0
+            rec.headcount_start = 0
+            rec.headcount_end = 0
             rec.departures_month = 0
             rec.applicants_in_progress_month = 0
             rec.postes_ouverts_actuels = 0
 
-            # 1) Effectif début & fin de mois = nb de CONTRATS couvrant la date
-            # Compte des contrats du département actifs le jour `ds` (début de mois) :
+
+
+            # 1) Effectif début & fin de mois
+            ## Compte des contrats du département actifs le jour `ds` (début de mois) :
             rec.headcount_start = Contract.search_count([
                 ('employee_id.department_id', '=', dep.id),
                 ('date_start', '<=', ds),
@@ -103,7 +114,7 @@ class HrRecruitMonthHistory(models.Model):
                 '|', ('date_end', '=', False), ('date_end', '>=', de),
             ])
 
-            # 2) Départs du mois = nb de CONTRATS dont date_end ∈ [ds, de]
+            # 2) Départs du mois = nb de contrats dont date_end ∈ [ds, de]
             rec.departures_month = Contract.search_count([
                 ('employee_id.department_id', '=', dep.id),
                 ('date_end', '>=', ds),
@@ -112,11 +123,12 @@ class HrRecruitMonthHistory(models.Model):
 
             # 3) Candidats "en cours"
             # commencé avant fin de mois et pas encore clôturé  ou clôturé après début de mois
+
             rec.applicants_in_progress_month = Applicant.search_count([
                 ('job_id.department_id', '=', dep.id),
                 ('create_date', '<', de),
                 '|', ('date_closed', '=', False),
-                ('date_closed', '>=', ds),
+                     ('date_closed', '>=', ds),
             ])
 
             # 4) Postes ouverts
@@ -125,20 +137,18 @@ class HrRecruitMonthHistory(models.Model):
 
             rec.computed_at = fields.Datetime.now()
 
+
 class HrRecruitQuarterHistory(models.Model):
     _name = "hr.recruit.quarter_history"
     _description = "Recruitment Quarterly History (features ML)"
     _order = "annee desc, quarter_num desc, department_id"
 
-
     # ---------------------------
     # Clé & période
     # ---------------------------
-    # Identifiers & period
     department_id = fields.Many2one("hr.department", string="Department", required=True, index=True)
     annee = fields.Integer(string="Year", required=True, index=True)
     quarter_num = fields.Integer(string="Quarter", required=True, index=True)
-
 
     quarter_start = fields.Date(string="Quarter Start", compute="_compute_quarter_bounds", store=True)
     quarter_end = fields.Date(string="Quarter End", compute="_compute_quarter_bounds", store=True)
@@ -202,8 +212,7 @@ class HrRecruitQuarterHistory(models.Model):
     # Computes légers (période / dept)
     # ===========================
 
-
-   # Calcule les dates de début/fin du trimestre
+    # Calcule les dates de début/fin du trimestre
     @api.depends('annee', 'quarter_num')
     def _compute_quarter_bounds(self):
         for rec in self:
@@ -223,10 +232,10 @@ class HrRecruitQuarterHistory(models.Model):
 
     # mapping trimestre -> mois
     QUARTER_MONTHS = {
-        1: (1, 2, 3),  # Trimestre 1 → Janvier, Février, Mars
-        2: (4, 5, 6),  # Trimestre 2 → Avril, Mai, Juin
-        3: (7, 8, 9),  # Trimestre 3 → Juillet, Août, Septembre
-        4: (10, 11, 12),  # Trimestre 4 → Octobre, Novembre, Décembre
+        1: (1, 2, 3),       # Q1 -> Jan, Feb, Mar
+        2: (4, 5, 6),       # Q2 -> Apr, May, Jun
+        3: (7, 8, 9),       # Q3 -> Jul, Aug, Sep
+        4: (10, 11, 12),    # Q4 -> Oct, Nov, Dec
     }
 
     def _sum_months(self, months_recs, field_name):
@@ -236,19 +245,18 @@ class HrRecruitQuarterHistory(models.Model):
             val = getattr(m, field_name, 0) or 0
             total += val
         return total
-        #pour écrire du code plus générique et éviter de dupliquer la logique
-        # on utilise getattr(objet (comme hr.recruit.month_history), "nom_champs", valeur_par_defaut)
+        # Pour écrire du code plus générique, et éviter de dupliquer la logique on utilise getattr(obj(comme hr.recruit.month_history), "field", default)
 
     def _avg_months(self, months_recs, field_name):
-        """Moyenne trimestrielle simple : somme / 3 (on suppose 3 mois)."""
+        """Moyenne trimestrielle simple : somme / 3 mois."""
         return self._sum_months(months_recs, field_name) / 3.0
 
     def action_compute_quarter(self):
         """
-        cumule les 3 mois de hr.recruit.month_history :
+        Cumule les 3 mois de hr.recruit.month_history :
           - Base Q : départs = total ; autres indicateurs = moyenne des 3 mois
           - Lags Q-1..Q-4 : valeurs des 4 trimestres précédents
-          - Rolling means :moyenne calculée sur les 4 trimestres existants
+          - Rolling means : moyenne calculée sur les 4 trimestres existants
         """
         Month = self.env['hr.recruit.month_history']
         QHist = self.env['hr.recruit.quarter_history']
@@ -263,9 +271,10 @@ class HrRecruitQuarterHistory(models.Model):
         ]
 
         for rec in self:
-            # 1) les mois du trimestre
-            months = self.QUARTER_MONTHS[rec.quarter_num]   #exple months =(1, 2, 3)
-
+            # ==========
+            # 1) les mois du trimestre  # exple months =(1, 2, 3)
+            # ==========
+            months = self.QUARTER_MONTHS[rec.quarter_num]
 
             # 2) chercher les lignes mensuelles du trimestre
             months_recs = Month.search([
@@ -275,16 +284,16 @@ class HrRecruitQuarterHistory(models.Model):
             ], order="year, month")
 
             # 3) Base Q
-                 # Somme des départs
             rec.departs_confirmes = self._sum_months(months_recs, 'departures_month')
-                 # Moyennes
             rec.candidats_en_cours = self._avg_months(months_recs, 'applicants_in_progress_month')
             rec.postes_ouverts_actuels = self._avg_months(months_recs, 'postes_ouverts_actuels')
             rec.effectif_actuel = self._avg_months(months_recs, 'headcount_mean')
             rec.turnover_month_pct = self._avg_months(months_recs, 'turnover_month_pct')
+            # ==========
+            # 4) Lags Q-1..Q-4 :construire la liste (quarter,year) contiendra les 4 trimestres précédents
 
-            # 4) Lags Q-1..Q-4 : construire la liste (q,y)
-             # si (q,y)=(3, 2025) alors prev_list: [(2, 2025), (1, 2025), (4, 2024), (3, 2024)]
+            # ==========
+            # si (q,y)=(3, 2025) alors prev_list: [(2, 2025), (1, 2025), (4, 2024), (3, 2024)]
             prev_list = []
             q = int(rec.quarter_num)
             y = int(rec.annee)
@@ -296,7 +305,7 @@ class HrRecruitQuarterHistory(models.Model):
                     y -= 1
                 prev_list.append((q, y))
 
-            # Récupérer les lignes correspondants depuis  hr.recruit.quarter_history
+            # Récupérer les lignes correspondantes depuis hr.recruit.quarter_history
             prev_recs = []
             for pq, py in prev_list:
                 h = QHist.search([
@@ -307,13 +316,17 @@ class HrRecruitQuarterHistory(models.Model):
                 prev_recs.append(h if h else None)
 
             # Remplir les lags via boucles
+            # enumerate(prev_recs, start=1) parcourt la liste prev_recs en donnant à la fois l’index (1,2,3,4)et l’élément.
+
             for idx, h in enumerate(prev_recs, start=1):
+
                 for mname in base_metrics:
                     if h and h.id:
                         val = float(getattr(h, mname, 0.0) or 0.0)
                     else:
                         val = 0.0
                     setattr(rec, f"{mname}_lag_{idx}", val)
+            # donc _lag_1 à _lag_4), et h pour lire la valeur de la métrique sur l’enregistrement trouvé.
 
             # 5) Rolling means = moyenne des Q existants parmi Q-1..Q-4
             for mname in base_metrics:
@@ -326,9 +339,10 @@ class HrRecruitQuarterHistory(models.Model):
                 else:
                     avg_val = 0.0
                 setattr(rec, f"{mname}_rolling_mean", avg_val)
+                #On écrit sur rec le champ de moyenne glissante de la métrique (ex. headcount_end_rolling_mean) avec la moyenne calculée.
 
             # 6) Timestamp
             rec.computed_at = fields.Datetime.now()
 
         return True
-
+         #recs = “records” enregistrements ,prev "previous" précédent.

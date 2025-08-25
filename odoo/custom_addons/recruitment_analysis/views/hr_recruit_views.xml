@@ -193,11 +193,11 @@
 
                         <!-- Stat card : visible uniquement en predicted/saved -->
                         <div class="oe_button_box" name="button_box">
-    <button class="oe_stat_button" type="object" name="action_predict"
-            invisible="state not in ['predicted', 'saved']">
-        <field name="prediction_value" widget="statinfo" string="Prédiction"/>
-    </button>
-</div>
+                            <button class="oe_stat_button" type="object" name="action_predict"
+                                    invisible="state not in ['predicted', 'saved']">
+                                <field name="prediction_value" widget="statinfo" string="Prédiction"/>
+                            </button>
+                        </div>
 
 
                         <group col="4">
@@ -212,7 +212,7 @@
                         </group>
 
                         <group string="KPI" invisible="state == 'draft'">
->
+                            >
                             <field name="departs_confirmes" readonly="1"/>
                             <field name="candidats_en_cours" readonly="1"/>
                             <field name="postes_ouverts_actuels" readonly="1"/>

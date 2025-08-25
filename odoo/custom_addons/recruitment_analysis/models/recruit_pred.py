@@ -33,7 +33,6 @@ class HrRecruitAnalysis(models.Model):
             if r.quarter_num not in (1, 2, 3, 4):
                 raise ValidationError(_("quarter_num must be in 1..4."))
 
-
     @api.depends('annee', 'quarter_num')
     def _compute_quarter_bounds(self):
         for r in self:
@@ -45,6 +44,7 @@ class HrRecruitAnalysis(models.Model):
             last_day = calendar.monthrange(r.annee, last_month)[1]
             r.date_from = date(r.annee, first_month, 1)
             r.date_to = date(r.annee, last_month, last_day)
+
     # ---------------------------
     # États & timestamps
     # ---------------------------
