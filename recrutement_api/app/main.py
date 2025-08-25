@@ -55,3 +55,5 @@ async def predict_endpoint(payload: PredictionRequest):
     except Exception as e:
         logging.error(f"Erreur pendant la prédiction : {e}")
         raise HTTPException(status_code=500, detail=f"Erreur interne : {e}")
+
+

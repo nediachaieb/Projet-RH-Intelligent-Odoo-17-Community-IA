@@ -81,7 +81,9 @@
             <field name="arch" type="xml">
                 <form string="Historique trimestriel">
                     <sheet>
-
+                        <header>
+                            <button name="action_compute_quarter" type="object" string="Compute"/>
+                        </header>
                         <group col="4">
                             <group string="Contexte">
                                 <field name="department_id" required="1"/>
@@ -179,10 +181,12 @@
             <field name="arch" type="xml">
                 <form string="Analyse &amp; Prédiction">
                     <header>
-                        <button name="action_compute" type="object" string="Calculer"/>
-                        <button name="action_predict" type="object" string="Prédire"/>
-                        <button name="action_save" type="object" string="Enregistrer"/>
-                        <button name="action_reset_to_draft" type="object" string="Réinitialiser"/>
+                        <button name="action_compute" type="object" string="Compute"/>
+                        <button name="action_predict" type="object" string="Predict"/>
+                        <button name="action_save" type="object" string="Save"/>
+                        <button name="action_reset_to_draft" type="object" string="Reset"/>
+
+
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,computed,predicted,saved,error"/>
                     </header>

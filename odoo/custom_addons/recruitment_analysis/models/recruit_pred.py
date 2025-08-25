@@ -112,20 +112,22 @@ class HrRecruitAnalysis(models.Model):
     # Actions
     # ===========================
     def _copy_from_quarter(self, q):
+        # Méthode utilitaire : copie toutes les features depuis l’enregistrement trimestriel.
         metrics = [
             'departs_confirmes', 'candidats_en_cours', 'postes_ouverts_actuels',
             'effectif_actuel', 'turnover_month_pct'
         ]
         for m in metrics:
             setattr(self, m, getattr(q, m, 0.0) or 0.0)
+            # getattr : Copie la valeur => self.m=getattr(q, m, 0.0)
             setattr(self, f"{m}_rolling_mean", getattr(q, f"{m}_rolling_mean", 0.0) or 0.0)
         for i in range(1, 5):
             for m in metrics:
                 setattr(self, f"{m}_lag_{i}", getattr(q, f"{m}_lag_{i}", 0.0) or 0.0)
 
     def action_compute(self):
-        """1) calcule TOUTES les features dans le modèle trimestriel ,
-        2) copie les features ici,
+        """1) calcule TOUTES les features dans le modèle trimestriel "action_compute_quarter
+        2) copie les features ici "_copy_from_quarter"
         3) passe en 'computed'."""
         QHist = self.env['hr.recruit.quarter_history']
         for r in self:
