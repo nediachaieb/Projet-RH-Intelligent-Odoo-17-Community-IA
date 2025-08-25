@@ -216,7 +216,7 @@
                         </group>
 
                         <group string="KPI" invisible="state == 'draft'">
-                            >
+
                             <field name="departs_confirmes" readonly="1"/>
                             <field name="candidats_en_cours" readonly="1"/>
                             <field name="postes_ouverts_actuels" readonly="1"/>

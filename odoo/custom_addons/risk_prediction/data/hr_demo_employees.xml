@@ -103,7 +103,8 @@
       <field name="share">False</field>
       <field name="groups_id" eval="[
         (4, ref('base.group_user')),
-        (4, ref('risk_prediction.group_emp_risk'))
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
       ]"/>
     </record>
     <record id="demo_emp_fatma" model="hr.employee">
@@ -135,7 +136,7 @@
       <field name="department_id" ref="demo_dep_finance"/>
       <field name="wage">5000.0</field>
       <field name="state">open</field>
-      <field name="hr_responsible_id" ref="base.user_admin"/>
+
     </record>
     <record id="demo_att_fatma_1" model="hr.attendance">
       <field name="employee_id" ref="demo_emp_fatma"/>
@@ -222,7 +223,8 @@
       <field name="share">False</field>
       <field name="groups_id" eval="[
         (4, ref('base.group_user')),
-        (4, ref('risk_prediction.group_emp_risk'))
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
       ]"/>
     </record>
     <record id="demo_emp_carol" model="hr.employee">
@@ -281,7 +283,8 @@
       <field name="share">False</field>
       <field name="groups_id" eval="[
         (4, ref('base.group_user')),
-        (4, ref('risk_prediction.group_emp_risk'))
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
       ]"/>
     </record>
     <record id="demo_emp_khayri" model="hr.employee">
@@ -340,7 +343,8 @@
       <field name="share">False</field>
       <field name="groups_id" eval="[
         (4, ref('base.group_user')),
-        (4, ref('risk_prediction.group_emp_risk'))
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
       ]"/>
     </record>
     <record id="demo_emp_aya" model="hr.employee">
@@ -401,7 +405,11 @@
       <field name="partner_id" ref="demo_part_omar"/>
       <field name="email">omar@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_omar" model="hr.employee">
       <field name="name">Omar</field>
@@ -453,7 +461,11 @@
       <field name="partner_id" ref="demo_part_nadia"/>
       <field name="email">nadia@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_nadia" model="hr.employee">
       <field name="name">Nadia</field>
@@ -505,7 +517,11 @@
       <field name="partner_id" ref="demo_part_mehdi"/>
       <field name="email">mehdi@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_mehdi" model="hr.employee">
       <field name="name">Mehdi</field>
@@ -556,7 +572,11 @@
       <field name="partner_id" ref="demo_part_salma"/>
       <field name="email">salma@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user')), (4, ref('risk_prediction.group_emp_risk'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_salma" model="hr.employee">
       <field name="name">Salma</field>
@@ -608,7 +628,11 @@
       <field name="partner_id" ref="demo_part_youssef"/>
       <field name="email">youssef@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_youssef" model="hr.employee">
       <field name="name">Youssef</field>
@@ -659,7 +683,11 @@
       <field name="partner_id" ref="demo_part_lina"/>
       <field name="email">lina@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_lina" model="hr.employee">
       <field name="name">Lina</field>
@@ -710,7 +738,11 @@
       <field name="partner_id" ref="demo_part_amine"/>
       <field name="email">amine@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_amine" model="hr.employee">
       <field name="name">Amine</field>
@@ -761,7 +793,11 @@
       <field name="partner_id" ref="demo_part_sara"/>
       <field name="email">sara@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_sara" model="hr.employee">
       <field name="name">Sara</field>
@@ -813,7 +849,11 @@
       <field name="partner_id" ref="demo_part_karim"/>
       <field name="email">karim@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_karim" model="hr.employee">
       <field name="name">Karim</field>
@@ -864,7 +904,11 @@
       <field name="partner_id" ref="demo_part_hala"/>
       <field name="email">hala@example.com</field>
       <field name="share">False</field>
-      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+      <field name="groups_id" eval="[
+        (4, ref('base.group_user')),
+        (4, ref('risk_prediction.group_emp_risk')),
+        (4, ref('survey.group_survey_user'))
+      ]"/>
     </record>
     <record id="demo_emp_hala" model="hr.employee">
       <field name="name">Hala</field>
